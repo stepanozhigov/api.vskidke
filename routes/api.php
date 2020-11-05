@@ -20,9 +20,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//Route::middleware('auth:api')->group(function() {
+Route::middleware('auth:api')->group(function() {
         Route::apiResource('employees', EmployeeController::class);
         Route::apiResource('projects', EmployeeController::class);
-    //});
+});
 
     
