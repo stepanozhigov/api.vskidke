@@ -18,10 +18,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);
 
@@ -31,9 +27,5 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::apiResource('employees', EmployeeController::class);
         Route::apiResource('projects', ProjectController::class);
 });
-
-        // Route::apiResource('users', UserController::class);
-        // Route::apiResource('employees', EmployeeController::class);
-        // Route::apiResource('projects', ProjectController::class);
 
     
