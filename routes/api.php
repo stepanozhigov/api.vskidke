@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,9 +22,18 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('auth:api')->group(function() {
+Route::post('/register',[AuthController::class,'register']);
+Route::post('/login',[AuthController::class,'login']);
+
+Route::middleware('auth:sanctum')->group(function() {
+        Route::post('/logout',[AuthController::class,'logout']);
+        Route::apiResource('users', UserController::class);
         Route::apiResource('employees', EmployeeController::class);
-        Route::apiResource('projects', EmployeeController::class);
+        Route::apiResource('projects', ProjectController::class);
 });
+
+        // Route::apiResource('users', UserController::class);
+        // Route::apiResource('employees', EmployeeController::class);
+        // Route::apiResource('projects', ProjectController::class);
 
     
