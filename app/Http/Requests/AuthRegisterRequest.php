@@ -27,7 +27,8 @@ class AuthRegisterRequest extends FormRequest
         return [
             'name'=>'required',
             'email'=>'required|email|unique:users',
-            'password'=>'required|min:6|max:255'
+            'password'=>'required|min:6|max:255|confirmed',
+            'password_confirmation'=>'required'
         ];
     }
 }
