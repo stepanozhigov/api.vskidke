@@ -8,7 +8,9 @@ use App\Models\User;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -25,15 +27,14 @@ class AuthController extends Controller
 
     public function login(AuthLoginRequest $request) {
 
-        $credentials = request(['email','password']);
-        if(!Auth::attempt($credentials)) {
-            return response()->json('Authentication failed',500);
-        }
+        $user = User::where('email', $request->email)->first();
 
-        $user = User::where('email',$request->email)->first();
-        $tokenResult = $user->createToken('authToken')->plainTextToken;
-
-        return response()->json($tokenResult,200);
+        if (! $user || ! Hash::check($request->password, $user->password)) {
+        throw ValidationException::withMessages([
+            'email' => ['The provided credentials are incorrect.'],
+        ]);
+    }
+        return $user->createToken('authToken')->plainTextToken;
     }
 
     public function logout(Request $request) {
